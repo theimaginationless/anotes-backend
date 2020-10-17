@@ -9,10 +9,13 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
-public abstract class DatedEntity {
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public abstract class DatedEntity extends BaseEntity {
 
     @CreationTimestamp
     LocalDateTime creationDate;
+
     @UpdateTimestamp
     LocalDateTime editDate;
 }
