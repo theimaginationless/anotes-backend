@@ -23,5 +23,3 @@ public class AppUserService implements UserDetailsService {
                 );
     }
 }
-
-//public class AppUserService {}

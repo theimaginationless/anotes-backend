@@ -4,6 +4,7 @@ import com.anotes.security.jwt.JwtCredentialsAuthFilter;
 import com.anotes.security.jwt.JwtProperties;
 import com.anotes.security.jwt.JwtTokenService;
 import com.anotes.security.jwt.JwtTokenVerifierFilter;
+import com.anotes.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +26,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private final ObjectMapper objectMapper;
     private final JwtProperties jwtProps;
     private final JwtTokenService jwtTokenService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,20 +35,30 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(
+                .addFilterAt(
+                        new RegistrationFilter(
+                                userService,
+                                passwordEncoder,
+                                jwtTokenService,
+                                jwtProps,
+                                objectMapper
+                        ),
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterAfter(
                         new JwtCredentialsAuthFilter(
                                 objectMapper,
                                 authenticationManager(),
                                 jwtTokenService,
                                 jwtProps
-                        )
+                        ),
+                        RegistrationFilter.class
                 )
                 .addFilterAfter(
                         new JwtTokenVerifierFilter(jwtTokenService),
                         JwtCredentialsAuthFilter.class
                 )
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated();
+                .anyRequest().authenticated();
     }
 }
