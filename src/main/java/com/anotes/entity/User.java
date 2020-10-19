@@ -1,5 +1,6 @@
 package com.anotes.entity;
 
+import com.anotes.util.Constants;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -22,7 +23,7 @@ public class User extends DatedEntity {
     )
     @SequenceGenerator(
             name = "seq_user",
-            allocationSize = 5
+            allocationSize = Constants.ENTITY_ID_GENERATOR_STEP
     )
     private Long id;
 

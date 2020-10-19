@@ -3,7 +3,7 @@ package com.anotes.controller;
 import com.anotes.controller.request.NoteRequest;
 import com.anotes.controller.response.NoteResponse;
 import com.anotes.entity.Note;
-import com.anotes.security.AppUser;
+import com.anotes.entity.User;
 import com.anotes.service.NoteService;
 import com.anotes.util.Utils;
 import lombok.AllArgsConstructor;
@@ -30,16 +30,8 @@ public class NoteController {
             @Valid @RequestBody NoteRequest request,
             Authentication authentication
     ) {
-        AppUser appUser = Utils.castAuthToAppUser(authentication);
-        Note savedNote = noteService.save(
-                new Note(
-                        appUser.getUser(),
-                        request.getTitle(),
-                        request.getText(),
-                        request.getPinned(),
-                        request.getReminderDate()
-                )
-        );
+        User user = Utils.castAuthToAppUser(authentication).getUser();
+        Note savedNote = noteService.createNote(request, user);
         return NoteResponse.from(savedNote);
     }
 }

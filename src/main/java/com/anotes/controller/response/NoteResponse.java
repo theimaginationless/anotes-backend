@@ -14,6 +14,7 @@ public class NoteResponse {
 
     private Long id;
     private Long userId;
+    private String snapshot;
     private String title;
     private String text;
     private Boolean pinned;
@@ -25,6 +26,7 @@ public class NoteResponse {
         return new NoteResponse(
                 note.getUser().getId(),
                 note.getId(),
+                note.getSnapshot().getMd5(),
                 note.getTitle(),
                 note.getText(),
                 note.getPinned(),

@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public abstract class DatedEntity extends BaseEntity {
 
     @CreationTimestamp
-    LocalDateTime creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
-    LocalDateTime editDate;
+    private LocalDateTime editDate;
 }

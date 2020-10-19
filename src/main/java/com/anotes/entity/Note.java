@@ -1,6 +1,10 @@
 package com.anotes.entity;
 
-import lombok.*;
+import com.anotes.util.Constants;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,12 +23,15 @@ public class Note extends DatedEntity {
     )
     @SequenceGenerator(
             name = "seq_note",
-            allocationSize = 5
+            allocationSize = Constants.ENTITY_ID_GENERATOR_STEP
     )
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private User user;
+
+    @ManyToOne
+    private Snapshot snapshot;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -37,8 +44,16 @@ public class Note extends DatedEntity {
 
     private LocalDateTime reminderDate;
 
-    public Note(User user, String title, String text, Boolean pinned, LocalDateTime reminderDate) {
+    public Note(
+            User user,
+            Snapshot snapshot,
+            String title,
+            String text,
+            Boolean pinned,
+            LocalDateTime reminderDate
+    ) {
         this.user = user;
+        this.snapshot = snapshot;
         this.title = title;
         this.text = text;
         this.pinned = pinned;
