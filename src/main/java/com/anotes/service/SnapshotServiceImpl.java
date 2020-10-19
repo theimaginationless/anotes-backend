@@ -1,6 +1,7 @@
 package com.anotes.service;
 
 import com.anotes.entity.Snapshot;
+import com.anotes.entity.User;
 import com.anotes.repository.SnapshotRepository;
 import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,12 @@ public class SnapshotServiceImpl extends BaseServiceImpl<Snapshot, SnapshotRepos
     }
 
     @Override
-    public Option<Snapshot> findByMd5(String md5) {
-        return getRepository().findByMd5(md5);
+    public Option<Snapshot> findByUserAndMd5(User user, String md5) {
+        return getRepository().findByUserAndMd5(user, md5);
+    }
+
+    @Override
+    public Option<Snapshot> findLastSnapshotByUser(User user) {
+        return getRepository().findFirstByUserOrderByCreationDateDesc(user);
     }
 }

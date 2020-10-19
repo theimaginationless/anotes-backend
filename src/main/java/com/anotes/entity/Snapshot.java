@@ -25,6 +25,9 @@ public class Snapshot {
     )
     private Long id;
 
+    @ManyToOne
+    private User user;
+
     @NotEmpty
     @Column(unique = true)
     private String md5;
@@ -32,7 +35,8 @@ public class Snapshot {
     @CreationTimestamp
     private LocalDateTime creationDate;
 
-    public Snapshot(@NotEmpty String md5) {
+    public Snapshot(User user, String md5) {
+        this.user = user;
         this.md5 = md5;
     }
 }

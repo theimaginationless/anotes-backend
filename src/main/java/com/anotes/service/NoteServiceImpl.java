@@ -4,6 +4,7 @@ import com.anotes.controller.request.BackupRequest;
 import com.anotes.entity.Note;
 import com.anotes.entity.Snapshot;
 import com.anotes.entity.User;
+import com.anotes.exception.NotFoundException;
 import com.anotes.repository.NoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +33,18 @@ public class NoteServiceImpl extends BaseServiceImpl<Note, NoteRepository> imple
     @Override
     @Transactional
     public Snapshot backup(BackupRequest request, User user) {
-        // Check snapshot
         String notesMd5 = DigestUtils.md5DigestAsHex(request.toString().getBytes());
-        return snapshotService.findByMd5(notesMd5)
+        return snapshotService.findByUserAndMd5(user, notesMd5)
                 .peek(snapshot ->
-                        log.info("Backup with such md5 hash is already exists, snapshotMd5={}", snapshot.getMd5())
+                        log.info(
+                                "Backup with such md5 hash is already exists, userId={}, snapshotMd5={}",
+                                user.getId(),
+                                snapshot.getMd5()
+                        )
                 )
                 .getOrElse(() -> {
                     // Create Snapshot
-                    Snapshot snapshot = new Snapshot(notesMd5);
+                    Snapshot snapshot = new Snapshot(user, notesMd5);
                     Snapshot savedSnapshot = snapshotService.save(snapshot);
 
                     // Backup notes
@@ -58,9 +62,21 @@ public class NoteServiceImpl extends BaseServiceImpl<Note, NoteRepository> imple
                             )
                             .collect(Collectors.toList());
                     List<Note> savedNotes = getRepository().saveAll(notesToSave);
-                    log.info("Notes backed up successfully, userId={}, notes={}", user.getId(), savedNotes);
+                    log.info(
+                            "Notes backed up successfully, userId={}, snapshotMd5={}",
+                            user.getId(),
+                            savedSnapshot.getMd5()
+                    );
 
                     return savedSnapshot;
                 });
+    }
+
+    @Override
+    public List<Note> restoreLast(User user) {
+        Snapshot foundSnapshot = snapshotService.findLastSnapshotByUser(user)
+                .getOrElseThrow(() -> new NotFoundException("User has no backed up notes"));
+        List<Note> foundNotes = getRepository().findAllByUserAndSnapshot(user, foundSnapshot);
+        return foundNotes;
     }
 }
