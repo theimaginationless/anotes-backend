@@ -23,6 +23,9 @@ public class Note extends DatedEntity {
     )
     private Long id;
 
+    @OneToOne
+    private User user;
+
     @Column(nullable = false, length = 100)
     private String title;
 
@@ -34,7 +37,8 @@ public class Note extends DatedEntity {
 
     private LocalDateTime reminderDate;
 
-    public Note(String title, String text, Boolean pinned, LocalDateTime reminderDate) {
+    public Note(User user, String title, String text, Boolean pinned, LocalDateTime reminderDate) {
+        this.user = user;
         this.title = title;
         this.text = text;
         this.pinned = pinned;

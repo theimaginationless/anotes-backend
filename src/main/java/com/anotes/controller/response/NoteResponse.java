@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class NoteResponse {
 
     private Long id;
+    private Long userId;
     private String title;
     private String text;
     private Boolean pinned;
@@ -22,6 +23,7 @@ public class NoteResponse {
 
     public static NoteResponse from(Note note) {
         return new NoteResponse(
+                note.getUser().getId(),
                 note.getId(),
                 note.getTitle(),
                 note.getText(),
