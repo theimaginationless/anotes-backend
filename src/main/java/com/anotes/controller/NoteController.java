@@ -1,8 +1,8 @@
 package com.anotes.controller;
 
-import com.anotes.controller.request.NoteRequest;
-import com.anotes.controller.response.NoteResponse;
-import com.anotes.entity.Note;
+import com.anotes.controller.request.BackupRequest;
+import com.anotes.controller.response.BackupResponse;
+import com.anotes.entity.Snapshot;
 import com.anotes.entity.User;
 import com.anotes.service.NoteService;
 import com.anotes.util.Utils;
@@ -24,14 +24,14 @@ public class NoteController {
 
     private final NoteService noteService;
 
-    @PostMapping("note")
+    @PostMapping("backup")
     @PreAuthorize("hasAuthority(T(com.anotes.security.AppAuthority).USER_WRITE.name())")
-    NoteResponse saveNote(
-            @Valid @RequestBody NoteRequest request,
+    BackupResponse backup(
+            @Valid @RequestBody BackupRequest request,
             Authentication authentication
     ) {
         User user = Utils.castAuthToAppUser(authentication).getUser();
-        Note savedNote = noteService.createNote(request, user);
-        return NoteResponse.from(savedNote);
+        Snapshot snapshot = noteService.backup(request, user);
+        return BackupResponse.from(snapshot, user);
     }
 }
