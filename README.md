@@ -14,7 +14,7 @@ Backend for notes application.
 
 ## API short notation
 
-###Register a new user [POST `/api/register`]
+### Register a new user [POST `/api/register`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
@@ -34,7 +34,7 @@ Backend for notes application.
         + Body
         
 
-###Login [POST `/login`]
+### Login [POST `/login`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
@@ -52,7 +52,7 @@ Backend for notes application.
                 
         + Body
         
-###Backup user notes [POST `/api/backup`]
+### Backup user notes [POST `/api/backup`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
@@ -89,7 +89,7 @@ Backend for notes application.
                     "creationDate": "2020-10-19T22:27:47.564798"
                 }
 
-###Restore last user backup [GET `/api/restore`]
+### Restore last user backup [GET `/api/restore`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
