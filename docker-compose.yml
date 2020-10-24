@@ -1,0 +1,38 @@
+version: '3'
+services:
+
+  anotes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - anotes-net
+    ports:
+      - '8080:8080'
+    environment:
+      - DB_URL=jdbc:postgresql://anotesdb:5432/postgres
+      - DB_USER=postgres
+      - DB_PASS=root7
+    depends_on:
+      - anotesdb
+    logging:
+      driver: json-file
+    restart: always
+
+  anotesdb:
+    image: postgres:13
+    networks:
+      - anotes-net
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_PASSWORD=root7
+    volumes:
+      - anotesdb-vol:/var/lib/postgresql/data
+    restart: always
+
+networks:
+  anotes-net:
+    driver: bridge
+volumes:
+  anotesdb-vol:
