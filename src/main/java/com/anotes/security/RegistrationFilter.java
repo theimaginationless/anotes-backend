@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -100,9 +101,12 @@ public class RegistrationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        if (!HttpMethod.POST.matches(request.getMethod())) {
+            return true;
+        }
         String path = request.getServletPath();
-        path = path.endsWith("/") ? String.join("/", path.split("/")) : path;
-        return !path.equals("/api/register");
+        path = path.endsWith("/") ? String.join("/", path.split("/")) : path; // remove trailing '/'
+        return !path.equals("/register");
     }
 
     private void prepareErrorResponse(

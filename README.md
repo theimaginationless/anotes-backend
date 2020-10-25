@@ -12,9 +12,20 @@ Backend for notes application.
 + PostgreSQL 13
 + JWT
 
+## Docker
+
+### Deploy & run with docker-compose
++ `cd anotes/` # project root
++ `docker-compose up` # deploy app + db
+
+### Clean run
++ `docker-compose stop`
++ `docker-compose rm`
++ `docker compose up` 
+
 ## API short notation
 
-### Register a new user [POST `/api/register`]
+### Register a new user [POST `/register`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
@@ -32,18 +43,33 @@ Backend for notes application.
             Authorization: Bearer sASsada_some_token
             
     + Body
-        
+    
++ Response 400 (application/json;charset=UTF-8)
+
+    + Headers
+    
+    + Body
+    
+            {
+                "timestamp": "2020-10-25T16:15:05.636+00:00",
+                "status": 400,
+                "errors": [
+                    "Nickname 'someNick' is already taken"
+                ]
+            }
 
 ### Login [POST `/login`]
 + Request (application/json;charset=UTF-8)
 
     + Headers
+    
     + Body
     
             {
                 "nickname": "someNick",
                 "password": "somePasswd1"
             }
+            
 + Response 200 (application/json;charset=UTF-8)
    
     + Headers
