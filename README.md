@@ -1,5 +1,5 @@
-# ANotes backend
-Backend for notes application.
+# ANotes backup server
+Backup server for ANotes app
 
 ## Features:
 + Backup/restore user notes
@@ -19,9 +19,10 @@ Backend for notes application.
 + `docker-compose up` # deploy app + db
 
 ### Clean run
-+ `docker-compose stop`
-+ `docker-compose rm`
-+ `docker compose up` 
++ `cd anotes/` # project root
++ `docker-compose stop` # stop app + db
++ `docker-compose rm` # remove app + db
++ `docker compose up` # deploy new app + db
 
 ## API short notation
 
