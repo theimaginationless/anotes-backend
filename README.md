@@ -22,7 +22,7 @@ Backup server for ANotes app
 + `cd anotes/` # project root
 + `docker-compose stop` # stop app + db
 + `docker-compose rm` # remove app + db
-+ `docker compose up` # deploy new app + db
++ `docker-compose up` # deploy new app + db
 
 ## API short notation
 
