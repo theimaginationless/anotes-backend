@@ -57,7 +57,9 @@ public class NoteServiceImpl extends BaseServiceImpl<Note, NoteRepository> imple
                                             reqNote.getTitle(),
                                             reqNote.getText(),
                                             reqNote.getPinned(),
-                                            reqNote.getReminderDate()
+                                            reqNote.getReminderDate(),
+                                            reqNote.getCreationDate(),
+                                            reqNote.getEditDate()
                                     )
                             )
                             .collect(Collectors.toList());

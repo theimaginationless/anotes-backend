@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Note extends DatedEntity {
+public class Note extends BaseEntity {
 
     @Id
     @GeneratedValue(
@@ -44,13 +44,19 @@ public class Note extends DatedEntity {
 
     private LocalDateTime reminderDate;
 
+    private LocalDateTime creationDate;
+
+    private LocalDateTime editDate;
+
     public Note(
             User user,
             Snapshot snapshot,
             String title,
             String text,
             Boolean pinned,
-            LocalDateTime reminderDate
+            LocalDateTime reminderDate,
+            LocalDateTime creationDate,
+            LocalDateTime editDate
     ) {
         this.user = user;
         this.snapshot = snapshot;
@@ -58,5 +64,7 @@ public class Note extends DatedEntity {
         this.text = text;
         this.pinned = pinned;
         this.reminderDate = reminderDate;
+        this.creationDate = creationDate;
+        this.editDate = editDate;
     }
 }
