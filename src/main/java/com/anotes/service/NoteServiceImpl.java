@@ -4,7 +4,6 @@ import com.anotes.controller.request.BackupRequest;
 import com.anotes.entity.Note;
 import com.anotes.entity.Snapshot;
 import com.anotes.entity.User;
-import com.anotes.exception.NotFoundException;
 import com.anotes.repository.NoteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,9 @@ public class NoteServiceImpl extends BaseServiceImpl<Note, NoteRepository> imple
                                             reqNote.getTitle(),
                                             reqNote.getText(),
                                             reqNote.getPinned(),
-                                            reqNote.getReminderDate()
+                                            reqNote.getReminderDate(),
+                                            reqNote.getCreationDate(),
+                                            reqNote.getEditDate()
                                     )
                             )
                             .collect(Collectors.toList());
@@ -74,9 +77,8 @@ public class NoteServiceImpl extends BaseServiceImpl<Note, NoteRepository> imple
 
     @Override
     public List<Note> restoreLast(User user) {
-        Snapshot foundSnapshot = snapshotService.findLastSnapshotByUser(user)
-                .getOrElseThrow(() -> new NotFoundException("User has no backed up notes"));
-        List<Note> foundNotes = getRepository().findAllByUserAndSnapshot(user, foundSnapshot);
-        return foundNotes;
+        return snapshotService.findLastSnapshotByUser(user)
+                .map(foundSnapshot -> getRepository().findAllByUserAndSnapshot(user, foundSnapshot))
+                .getOrElse(Collections.emptyList());
     }
 }

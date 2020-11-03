@@ -25,7 +25,8 @@ public class RestoreResponse {
                                     note.getText(),
                                     note.getPinned(),
                                     note.getReminderDate(),
-                                    note.getCreationDate()
+                                    note.getCreationDate(),
+                                    note.getEditDate()
                             )
                     )
                     .collect(Collectors.toList())

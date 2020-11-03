@@ -15,14 +15,14 @@ Backup server for ANotes app
 ## Docker
 
 ### Deploy & run with docker-compose
-+ `cd anotes/` # project root
++ `cd anotes-backend/` # project root
 + `docker-compose up` # deploy app + db
 
 ### Clean run
-+ `cd anotes/` # project root
++ `cd anotes-backend/` # project root
 + `docker-compose stop` # stop app + db
 + `docker-compose rm` # remove app + db
-+ `docker-compose up` # deploy new app + db
++ `docker-compose up --build` # deploy new app + db
 
 ## API short notation
 
@@ -93,12 +93,16 @@ Backup server for ANotes app
                     {
                         "title": "Drink water",
                         "text": "All water\n",
-                        "pinned": true
+                        "pinned": true,
+                        "creationDate": "2019-10-19T21:19:18",
+                        "editDate": "2019-10-19T21:20:00"
                     },
                     {
                         "title": "Learn how to code",
                         "text": "Or mayb note\n...",
                         "pinned": false,
+                        "creationDate": "2019-10-19T21:19:18",
+                        "editDate": "2019-10-19T21:20:00",
                         "reminderDate": "2021-11-19T21:19:18"
                     }
                 ]
@@ -137,13 +141,17 @@ Backup server for ANotes app
                         "title": "Drink water",
                         "text": "All water\n",
                         "pinned": true,
-                        "reminderDate": null
+                        "reminderDate": null,
+                        "creationDate": "2019-10-19T21:19:18",
+                        "editDate": "2019-10-19T21:20:00"
                     },
                     {
                         "title": "Learn how to code",
                         "text": "Or mayb note\n...",
                         "pinned": false,
-                        "reminderDate": "2021-11-19T21:19:18"
+                        "reminderDate": "2021-11-19T21:19:18",
+                        "creationDate": "2019-10-19T21:19:18",
+                        "editDate": "2019-10-19T21:20:00"
                     }
                 ]
             }
