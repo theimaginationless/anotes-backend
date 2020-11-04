@@ -14,5 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BackupRequest {
 
+    @Valid
+    @NotEmpty
     private List<NoteModel> notes;
 }
