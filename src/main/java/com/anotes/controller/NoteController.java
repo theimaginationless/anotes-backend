@@ -27,7 +27,7 @@ public class NoteController {
     @PostMapping("backup")
     @PreAuthorize("hasAuthority(T(com.anotes.security.AppAuthority).USER_WRITE.name())")
     BackupResponse backup(
-            @Valid @RequestBody BackupRequest request,
+            @RequestBody BackupRequest request,
             Authentication authentication
     ) {
         User user = Utils.castAuthToAppUser(authentication).getUser();
